@@ -1,0 +1,114 @@
+<app-navbar></app-navbar>
+
+<div class="container mt-5 px-5">
+
+    <div class="mb-4">
+
+        <h2>Confirm order and pay</h2>
+    <span>please make the payment, after that you can enjoy all the features and benefits.</span>
+
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card p-3">
+                <div [formGroup]="checkoutForm">
+                    <h6 class="text-uppercase">Payment details</h6>
+
+                    <div class="inputbox mt-3"> <input type="text" name="cardName" class="form-control" required="required" formControlName="cardName"> <span>Name on card</span> </div>
+                    <div *ngIf="!checkoutForm.controls['cardName'].valid && (checkoutForm.controls['cardName'].dirty || checkoutForm.controls['cardName'].touched)" class="error-text"><span>Card name required.</span></div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="cardNumber" class="form-control" required="required" formControlName="cardNumber"> <i class="fa fa-credit-card"></i> <span>Card Number</span>
+                            </div>
+                            <div *ngIf="!checkoutForm.controls['cardNumber'].valid && (checkoutForm.controls['cardNumber'].dirty || checkoutForm.controls['cardNumber'].touched)" class="error-text"><span>Card number required.</span></div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex flex-row">
+                                <div class="col">
+                                    <div class="inputbox mt-3 mr-2"> <input type="text" name="expiry" class="form-control" required="required"formControlName="expiry"> <span>Expiry</span> </div>
+                                    <div *ngIf="!checkoutForm.controls['expiry'].valid && (checkoutForm.controls['expiry'].dirty || checkoutForm.controls['expiry'].touched)" class="error-text"><span>Expiry required.</span></div>
+                                </div>
+                                <div class="col">
+                                    <div class="inputbox mt-3 mr-2"> <input type="text" name="cvv" class="form-control" required="required"formControlName="cvv"> <span>CVV</span> </div>
+                                    <div *ngIf="!checkoutForm.controls['cvv'].valid && (checkoutForm.controls['cvv'].dirty || checkoutForm.controls['cvv'].touched)" class="error-text"><span>CVV required.</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 mb-4">
+
+                        <h6 class="text-uppercase">Billing Address</h6>
+                        <div class="row mt-3">
+
+                            <div class="col-md-6">
+
+                                <div class="inputbox mt-3 mr-2"> <input type="text" name="address" class="form-control" required="required" formControlName="address"> <span>Street Address</span> </div>
+                                <div *ngIf="!checkoutForm.controls['address'].valid && (checkoutForm.controls['address'].dirty || checkoutForm.controls['address'].touched)" class="error-text"><span>Address required.</span></div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="inputbox mt-3 mr-2"> <input type="text" name="city" class="form-control" required="required" formControlName="city"> <span>City</span> </div>
+                                <div *ngIf="!checkoutForm.controls['city'].valid && (checkoutForm.controls['city'].dirty || checkoutForm.controls['city'].touched)" class="error-text"><span>City required.</span></div>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+
+                            <div class="col-md-6">
+
+                                <div class="inputbox mt-3 mr-2"> <input type="text" name="state" class="form-control" required="required" formControlName="state"> <span>State/Province</span> </div>
+                                <div *ngIf="!checkoutForm.controls['state'].valid && (checkoutForm.controls['state'].dirty || checkoutForm.controls['state'].touched)" class="error-text"><span>State required.</span></div>
+
+                            </div>
+                            <div class="col-md-6">
+
+                                <div class="inputbox mt-3 mr-2"> <input type="text" name="zipCode" class="form-control" required="required" formControlName="zipCode"> <span>Zip code</span> </div>
+                                <div *ngIf="!checkoutForm.controls['zipCode'].valid && (checkoutForm.controls['zipCode'].dirty || checkoutForm.controls['zipCode'].touched)" class="error-text"><span>Zipcode required.</span></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 mb-4 d-flex justify-content-between">
+
+                <button class="btn btn-danger" [routerLink]="['/cart']">Back to Cart</button>
+
+                <button class="btn btn-success px-3" (click)="onSubmit();" [disabled]="!checkoutForm.valid">Pay ${{totalPrice | number:'1.2-2'}}</button>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card card-blue p-3 text-white mb-3">
+
+            <span>You have to pay</span>
+                <div class="d-flex flex-row align-items-end mb-3">
+                    <h1 class="mb-0 yellow">${{totalPrice | number:'1.2-2'}}</h1>
+                </div>
+
+                <div class="hightlight">
+
+                    <span>100% Guaranteed Satisfaction!</span>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<nav class="navbar navbar-light bg-light">
+    <h4>
+        <img src="../../../assets/images/favicon.png" width="8%" height="8%" alt="Revature">
+        Revature Swag Shop
+    </h4>
+    <h4 style="color: #F26925;">Welcome, {{currUsername}}!</h4>
+    <form class="form-inline">
+        
+        <button class="btn btn-light" [routerLink]="['/home']">
+            Home
+        </button>
+        <button class="btn btn-light" [routerLink]="['/wishlist']">
+            Wishlist
+            <span class="badge badge-info">{{wishlistCount}}</span>
+        </button>
+
+        <button class="btn btn-light" [routerLink]="['/cart']">
+            Cart
+            <span class="badge badge-info">{{cartCount}}</span>
+        </button>
+        <button class="btn btn-outline-danger my-2 my-sm-0" (click)="logout();">Logout</button>
+    </form>
+</nav>

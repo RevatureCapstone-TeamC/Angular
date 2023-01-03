@@ -1,0 +1,19 @@
+<app-navbar></app-navbar>
+<table class="table table-striped" id="cart-table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+      </tr>
+    </thead>
+    <tbody id="cart-table-body">
+        <tr *ngFor="let product of product;">
+            <td>{{product.productName}}</td>
+            <td>{{product.productDescription}}</td>
+            <button class="btn btn-danger" (click)="removeItem(product)">Remove Item</button>
+            <button class="btn btn-warning" (click)="addToCart(product)">Add to Cart</button>
+        </tr>
+    </tbody>
+</table>
+<button class="btn btn-danger" [routerLink]="['/home']">Back</button>
+<button class="btn btn-primary" [routerLink]="['/cart']">Go to Cart</button>
