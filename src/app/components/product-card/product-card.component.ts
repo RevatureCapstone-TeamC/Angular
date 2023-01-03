@@ -2,13 +2,13 @@ import { DealService } from './../../services/deal.service';
 import { AuthService } from './../../services/auth.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from 'app/models/user';
-import { Wishlist } from 'app/models/wishlist';
-import { WishlistService } from 'app/services/wishlist.service';
+import { User } from '../../models/user';
+import { Wishlist } from '../../models/wishlist';
+import { WishlistService } from '../../services/wishlist.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
-import { Deal } from 'app/models/deal';
+import { Deal } from '../../models/deal';
 
 @Component({
   selector: 'app-product-card',
@@ -37,14 +37,14 @@ export class ProductCardComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private dealService: DealService
-    ) {
-      this.subscription = this.dealService.getDeals().subscribe(
-        (data) => {
-          //console.log(data);
-          this.deals = data;
-        }
-      );
-    }
+  ) {
+    this.subscription = this.dealService.getDeals().subscribe(
+      (data) => {
+        //console.log(data);
+        this.deals = data;
+      }
+    );
+  }
 
   ngOnInit(): void {
 

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Product } from 'app/models/product';
+import { Product } from '../models/product';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Wishlist } from 'app/models/wishlist';
+import { Wishlist } from '../models/wishlist';
 
 
 interface IWishlist {

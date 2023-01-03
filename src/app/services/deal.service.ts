@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Deal, Deal2 } from 'app/models/deal';
-import { environment } from 'environments/environment';
+import { Deal, Deal2 } from '../models/deal';
+import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ export class DealService {
 
   public getDeals(): Observable<Deal[]> {
     return this.http.get<Deal[]>(this.url)
-    .pipe(map ( (deals: Deal[]) => deals.map(deal => new Deal2(deal))));
+      .pipe(map((deals: Deal[]) => deals.map(deal => new Deal2(deal))));
   }
 
   public makeDeal(deal: Deal) {
@@ -28,6 +28,6 @@ export class DealService {
   }
 
   public deleteDeal(id: Number) {
-    return this.http.delete(this.url+'/'+id);
+    return this.http.delete(this.url + '/' + id);
   }
 }

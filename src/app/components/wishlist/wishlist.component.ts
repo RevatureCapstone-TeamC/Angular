@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
-import { WishlistService } from 'app/services/wishlist.service';
-import { Wishlist } from 'app/models/wishlist';
-import { AuthService } from 'app/services/auth.service';
-import { User } from 'app/models/user';
+import { WishlistService } from '../../services/wishlist.service';
+import { Wishlist } from '../../models/wishlist';
+import { AuthService } from '../../services/auth.service';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-wishlist',

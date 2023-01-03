@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User, User2 } from 'app/models/user';
+import { User, User2 } from '../models/user';
 import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { IUser } from 'app/models/userinterface';
+import { IUser } from '../models/userinterface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +17,14 @@ export class AuthService {
   private currUser: User = new User(0, '', '', '', '', false);
 
   constructor(private http: HttpClient) {
-   }
-
-  login(user: Object){
-    return this.http
-    .post<User>(`${this.authUrl}/login`, user);
   }
 
-  logout(): void{
+  login(user: Object) {
+    return this.http
+      .post<User>(`${this.authUrl}/login`, user);
+  }
+
+  logout(): void {
     this.currUser = new User(0, '', '', '', '', false);
     this.loggedIn = false;
     this.http.post(`${this.authUrl}/logout`, null);

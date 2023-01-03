@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { User } from 'app/models/user';
+import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
   }
 
   isAnEmail(value: string): boolean {
-    for(let i = 0; i < value.length; i++) {
+    for (let i = 0; i < value.length; i++) {
       if (value[i] == '@') {
         return true;
       }
