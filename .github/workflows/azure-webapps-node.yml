@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: dist/ecommerce-app
+          path: dist/ecommerce
 
   deploy-dev:
     runs-on: ubuntu-latest
