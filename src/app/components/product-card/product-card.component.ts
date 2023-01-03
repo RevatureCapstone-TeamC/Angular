@@ -69,7 +69,6 @@ export class ProductCardComponent implements OnInit {
   }
 
   addToCart(product: Product): void {
-    console.log(this.deals.length);
     let inCart = false;
 
     this.products.forEach(

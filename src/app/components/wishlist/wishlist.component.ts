@@ -103,6 +103,7 @@ export class WishlistComponent implements OnInit {
     console.log("removeItem called in component");
     this.wishlistService.removeItem(product.productId).subscribe(data => console.log(data));
 
+    /*old code
     if (this.currUser.userId) {
       this.wishlistService.getList(this.currUser.userId).subscribe(
         (wishlist) => {
@@ -116,6 +117,8 @@ export class WishlistComponent implements OnInit {
           this.wishlistService.setWishlist(iwish);
         });
     }
+    */
+    this.ngOnInit();
   }
 
   addToCart(product: Product): void {
