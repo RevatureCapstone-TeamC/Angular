@@ -1,3 +1,4 @@
+import { DealService } from './../../services/deal.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../../models/product';
@@ -20,24 +21,72 @@ export class WishlistComponent implements OnInit {
   currUser: User = new User(0, '', '', '', '', false);
 
 
-  constructor(private wishlistService: WishlistService, private authService: AuthService) { }
+  constructor(private wishlistService: WishlistService, private authService: AuthService, private dealService: DealService, private productService: ProductService) { }
 
   ngOnInit(): void {
     this.currUser = this.authService.findUser();
 
 
     if (this.currUser.userId) {
-      this.wishlistService.getList(this.currUser.userId).subscribe(
-        (wishlist) => {
-          this.product = wishlist;
-          console.log(this.product);
+      /*Old code
+      // this.wishlistService.getList(this.currUser.userId).subscribe(
+      //   (wishlist) => {
+      //     this.product = wishlist;
+      //     console.log(this.product);
+      //     let iwish = {
+      //       wishlistCount: wishlist.length,
+      //       products: wishlist
+      //     }
+      //     this.wishlistService.setWishlist(iwish);
+      //   });
+      */
 
-          let iwish = {
-            wishlistCount: wishlist.length,
-            products: wishlist
-          }
-          this.wishlistService.setWishlist(iwish);
-        });
+      //Get all the deals
+      this.dealService.getDeals().subscribe(
+        (deals) => {
+          //Get all the products
+          this.productService.getProducts().subscribe(
+            (prods) => {
+              //Get the users wishlist
+              this.wishlistService.getList(this.currUser.userId || 0).subscribe(
+                (wlist) => {
+
+                  //For every deal, compare to all the products and see if that product has a deal
+                  for (let d = 0; d < deals.length; d++) {
+                    for (let p = 0; p < prods.length; p++) {
+
+                      //If the deal's_fk_id is the same as the product's_id, then that product has a deal
+                      if (deals[d].fk_Product_Id == prods[p].productId) {
+                        //set the price of that product to the deal (if for some reason the saleprice is null, don't change it)
+                        prods[p].productPrice = deals[d].salePrice || prods[p].productPrice;
+                      }
+
+                      //Go through the wish list
+                      for (let w = 0; w < wlist.length; w++) {
+                        //If that product is on the wishlist, set its price to the products price
+                        //(the product should have updated prices from the previous if statement)
+                        if (wlist[w].productName == prods[p].productName) {
+                          wlist[w].productPrice = prods[p].productPrice;
+                        }
+                      }
+                    }
+                  }
+
+                  //Set global variables and update services
+                  this.product = wlist;
+                  console.log(this.product);
+
+                  let iwish = {
+                    wishlistCount: wlist.length,
+                    products: wlist
+                  }
+                  this.wishlistService.setWishlist(iwish);
+                }
+              );
+            }
+          );
+        }
+      );
     }
     else {
       alert("Please log in");

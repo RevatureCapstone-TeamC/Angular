@@ -59,14 +59,12 @@ export class ProductCardComponent implements OnInit {
       (list) => {
         this.wishlistCount = list.length;
         this.wishlistProducts = list;
+        this.subscription = this.dealService.getDeals().subscribe(
+          (data) => {
+            this.deals = data;
+          }
+        )
       }
-    );
-
-    this.subscription = this.dealService.getDeals().subscribe(
-        (data) => {
-          //console.log(data);
-          this.deals = data;
-        }
     );
   }
 
@@ -171,7 +169,7 @@ export class ProductCardComponent implements OnInit {
       newPriceS = temp;
       newPriceN = +newPriceS;
       if (isNaN(newPriceN)) {
-        alert(`The input you gave is not a known command or is not a number. (input = ${newPriceS})`);
+        alert(`The input you gave is not a known command or is not a number. \n(input = ${newPriceS})\nNo deal was made.`);
         return product;
       }
       c = confirm(`Are you sure you want to set the price of ${product.productName} to $${newPriceN}?`);
@@ -210,9 +208,11 @@ export class ProductCardComponent implements OnInit {
   }
 
   resetDeal(product: Product): Product {
+    let dealFound = false;
     console.log('Deal Array Length: ' + this.deals.length);
     for (let i = 0; i < this.deals.length; i++) {
       if (product.productId == this.deals[i].fk_Product_Id) {
+        dealFound = true;
         console.log('Deal Found');
         this.dealService.deleteDeal(this.deals[i].dealId || 0).subscribe(
           (data) => {
@@ -223,6 +223,9 @@ export class ProductCardComponent implements OnInit {
         this.deals[i].fk_Product_Id = 0;
         this.deals[i].salePrice = 0;
       }
+    }
+    if (!dealFound) {
+      alert(`No deal was found for ${product.productName}`);
     }
     console.log('Getting the original price');
     this.productService.getSingleProduct(product.productId).subscribe(

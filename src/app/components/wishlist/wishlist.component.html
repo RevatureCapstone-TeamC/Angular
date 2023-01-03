@@ -10,6 +10,7 @@
         <tr *ngFor="let product of product;">
             <td>{{product.productName}}</td>
             <td>{{product.productDescription}}</td>
+            <td>{{product.productPrice}}</td>
             <button class="btn btn-danger" (click)="removeItem(product)">Remove Item</button>
             <button class="btn btn-warning" (click)="addToCart(product)">Add to Cart</button>
         </tr>

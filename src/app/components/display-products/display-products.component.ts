@@ -1,8 +1,11 @@
+import { AuthService } from './../../services/auth.service';
+import { WishlistService } from './../../services/wishlist.service';
 import { Component, OnInit } from '@angular/core';
 import { Deal } from '../../models/deal';
 import { DealService } from '../../services/deal.service';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-display-products',
@@ -13,8 +16,12 @@ export class DisplayProductsComponent implements OnInit {
 
   allProducts: Product[] = [];
   deals: Deal[] = [];
+  wishlistProducts: Product[] = [];
+  wishlistCount!: number;
+  currUser: User = new User(0, '', '', '', '', false);
+  notified = false;
 
-  constructor(private productService: ProductService, private dealService: DealService) { }
+  constructor(private productService: ProductService, private dealService: DealService, private wishlistService: WishlistService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.dealService.getDeals().subscribe(
@@ -36,6 +43,46 @@ export class DisplayProductsComponent implements OnInit {
           },
           (err) => console.log(err),
           () => console.log("Products Retrieved")
+        );
+      }
+    );
+
+    this.productService.getProducts().subscribe (
+      (prod) => {
+        this.currUser = this.authService.findUser();
+        this.wishlistService.getList(this.currUser.userId!).subscribe(
+          (list) => {
+            this.wishlistCount = list.length;
+            this.wishlistProducts = list;
+
+            this.dealService.getDeals().subscribe(
+              (data) => {
+                this.deals = data;
+                console.log('Checking for products that have deals and seeing if they are wishlisted.');
+                console.log(`Products: ${prod.length}, Deals: ${this.deals.length}, WishList: ${this.wishlistCount}`);
+                let alertStr = '';
+                for (let d = 0; d < this.deals.length; d++) {
+                  for (let p = 0; p < prod.length; p++) {
+                    if (this.deals[d].fk_Product_Id == prod[p].productId) {
+                      console.log(`${prod[p].productName} has a deal`);
+                      for (let w = 0; w < this.wishlistCount; w++) {
+                        if (prod[p].productName == this.wishlistProducts[w].productName) {
+                          //This product has a deal and is on the wishlist.
+                          console.log(`${prod[p].productName} is on your wishlist`);
+                          alertStr = alertStr + `${this.wishlistProducts[w].productName} is now on sale for $${this.deals[d].salePrice}\n`;
+                        } else {
+                          console.log(`${prod[p].productName} is not on your wishlist`);
+                        }
+                      }
+                    }
+                  }
+                }
+                if (alertStr.length > 0) {
+                  alert(alertStr);
+                }
+              }
+            );
+          }
         );
       }
     );
