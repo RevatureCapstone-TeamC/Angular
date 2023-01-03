@@ -38,12 +38,7 @@ export class ProductCardComponent implements OnInit {
     private authService: AuthService,
     private dealService: DealService
   ) {
-    this.subscription = this.dealService.getDeals().subscribe(
-      (data) => {
-        //console.log(data);
-        this.deals = data;
-      }
-    );
+
   }
 
   ngOnInit(): void {
@@ -64,7 +59,15 @@ export class ProductCardComponent implements OnInit {
       (list) => {
         this.wishlistCount = list.length;
         this.wishlistProducts = list;
-      });
+      }
+    );
+
+    this.subscription = this.dealService.getDeals().subscribe(
+        (data) => {
+          //console.log(data);
+          this.deals = data;
+        }
+    );
   }
 
   addToCart(product: Product): void {
@@ -167,6 +170,10 @@ export class ProductCardComponent implements OnInit {
       }
       newPriceS = temp;
       newPriceN = +newPriceS;
+      if (isNaN(newPriceN)) {
+        alert(`The input you gave is not a known command or is not a number. (input = ${newPriceS})`);
+        return product;
+      }
       c = confirm(`Are you sure you want to set the price of ${product.productName} to $${newPriceN}?`);
     }
 
@@ -199,6 +206,30 @@ export class ProductCardComponent implements OnInit {
       product.productPrice = newPriceN;
     }
 
+    return product;
+  }
+
+  resetDeal(product: Product): Product {
+    console.log('Deal Array Length: ' + this.deals.length);
+    for (let i = 0; i < this.deals.length; i++) {
+      if (product.productId == this.deals[i].fk_Product_Id) {
+        console.log('Deal Found');
+        this.dealService.deleteDeal(this.deals[i].dealId || 0).subscribe(
+          (data) => {
+            console.log('Deal deleted');
+          }
+        )
+        this.deals[i].dealId = 0;
+        this.deals[i].fk_Product_Id = 0;
+        this.deals[i].salePrice = 0;
+      }
+    }
+    console.log('Getting the original price');
+    this.productService.getSingleProduct(product.productId).subscribe(
+      (data) => {
+        product.productPrice = data.productPrice;
+      }
+    );
     return product;
   }
 

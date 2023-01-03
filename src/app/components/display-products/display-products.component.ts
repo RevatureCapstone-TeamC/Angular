@@ -21,24 +21,26 @@ export class DisplayProductsComponent implements OnInit {
       (data) => {
         //console.log(data);
         this.deals = data;
+        this.productService.getProducts().subscribe(
+          (resp) => {
+            //
+            for (let i = 0; i < resp.length; i++) {
+              for (let j = 0; j < this.deals.length; j++) {
+                if (resp[i].productId == this.deals[j].fk_Product_Id) {
+                  resp[i].productPrice = this.deals[j].salePrice || 0;
+                }
+              }
+            }
+            //
+            this.allProducts = resp;
+          },
+          (err) => console.log(err),
+          () => console.log("Products Retrieved")
+        );
       }
     );
-    this.productService.getProducts().subscribe(
-      (resp) => {
-        //
-        for (let i = 0; i < resp.length; i++) {
-          for (let j = 0; j < this.deals.length; j++) {
-            if (resp[i].productId == this.deals[j].fk_Product_Id) {
-              resp[i].productPrice = this.deals[j].salePrice || 0;
-            }
-          }
-        }
-        //
-        this.allProducts = resp;
-      },
-      (err) => console.log(err),
-      () => console.log("Products Retrieved")
-    );
   }
+
+
 
 }

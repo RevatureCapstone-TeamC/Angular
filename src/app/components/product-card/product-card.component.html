@@ -20,5 +20,6 @@
         <button class="btn btn-outline-success" (click)="addToCart(productInfo)">Add to Cart</button>
         <button class="btn btn-outline-success" (click)="addToWishlist(productInfo)">Add to Wishlist</button>
         <button class="btn btn-outline-success" *ngIf="admin" (click)="productInfo = createDeal(productInfo)">Edit Deals</button>
+        <button class="btn btn-outline-success" *ngIf="admin" (click)="productInfo = resetDeal(productInfo)">Reset Deals</button>
     </div>
   </div>
