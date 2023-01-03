@@ -9,6 +9,8 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { Deal } from '../../models/deal';
+import { CartService } from 'src/app/services/cart.service';
+import { Cart } from 'src/app/models/cart';
 
 @Component({
   selector: 'app-product-card',
@@ -23,6 +25,7 @@ export class ProductCardComponent implements OnInit {
     product: Product,
     quantity: number
   }[] = [];
+  cartProducts: Product[] = [];
   wishlistProducts: Product[] = [];
   subscription!: Subscription;
   totalPrice: number = 0;
@@ -36,8 +39,10 @@ export class ProductCardComponent implements OnInit {
     private wishlistService: WishlistService,
     private router: Router,
     private authService: AuthService,
-    private dealService: DealService
+    private dealService: DealService,
+    private cartService: CartService
   ) {
+    this.currUser = this.authService.findUser();
     this.subscription = this.dealService.getDeals().subscribe(
       (data) => {
         //console.log(data);
@@ -48,58 +53,41 @@ export class ProductCardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.currUser = this.authService.findUser();
-
-    this.subscription = this.productService.getCart().subscribe(
-      (cart) => {
-        this.cartCount = cart.cartCount;
-        this.products = cart.products;
-        this.totalPrice = cart.totalPrice;
-        this.currUser = this.authService.findUser();
-        this.admin = this.authService.getAdmin();
-      }
-    );
-
     this.subscription = this.wishlistService.getList(this.currUser.userId!).subscribe(
       (list) => {
         this.wishlistCount = list.length;
         this.wishlistProducts = list;
       });
+    this.cartService.getFullCart(this.currUser.userId!).subscribe(
+      (cart) => {
+        let price = 0;
+        cart.forEach(e => price += e.productPrice);
+        let icart = {
+          cartCount: cart.length,
+          products: cart,
+          totalPrice: price
+        }
+        this.cartService.setCart(icart);
+
+        this.cartProducts = cart;
+        this.totalPrice = price;
+      });
   }
 
   addToCart(product: Product): void {
-    console.log(this.deals.length);
-    let inCart = false;
 
-    this.products.forEach(
-      (element) => {
-        if (element.product == product) {
-          ++element.quantity;
-          let cart = {
-            cartCount: this.cartCount + 1,
-            products: this.products,
-            totalPrice: this.totalPrice + product.productPrice
-          };
-          this.productService.setCart(cart);
-          inCart = true;
-          return;
-        };
-      }
-    );
+    let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
+    this.cartService.addItem(cartItem).subscribe(data => {
+      console.log(data);
+      this.ngOnInit();
+    });
 
-    if (inCart == false) {
-      let newProduct = {
-        product: product,
-        quantity: 1
-      };
-      this.products.push(newProduct);
-      let cart = {
-        cartCount: this.cartCount + 1,
-        products: this.products,
-        totalPrice: this.totalPrice + product.productPrice
-      }
-      this.productService.setCart(cart);
-    }
+
+    // this.cartService.getCart().subscribe((cart) => {
+    //   this.cartProducts = cart.products;
+    //   this.totalPrice = cart.totalPrice;
+    // });
+
   }
 
   addToWishlist(product: Product): void {
