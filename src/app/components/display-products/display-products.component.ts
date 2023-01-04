@@ -69,7 +69,7 @@ export class DisplayProductsComponent implements OnInit {
                         if (prod[p].productName == this.wishlistProducts[w].productName) {
                           //This product has a deal and is on the wishlist.
                           console.log(`${prod[p].productName} is on your wishlist`);
-                          alertStr = alertStr + `${this.wishlistProducts[w].productName} is now on sale for $${this.deals[d].salePrice}\n`;
+                          alertStr = alertStr + `${this.wishlistProducts[w].productName} is now on sale for $${this.deals[d].salePrice?.toFixed(2)}\n`;
                         } else {
                           console.log(`${prod[p].productName} is not on your wishlist`);
                         }
