@@ -123,6 +123,5 @@ export class WishlistComponent implements OnInit {
     }
     */
     this.ngOnInit();
-    });
   }
 }

@@ -43,12 +43,13 @@ export class ProductCardComponent implements OnInit {
     private cartService: CartService
   ) {
     this.currUser = this.authService.findUser();
-    this.subscription = this.dealService.getDeals().subscribe(
-      (data) => {
-        //console.log(data);
-        this.deals = data;
-      }
-    );
+    this.admin = this.currUser.ifAdmin || false;
+    // this.subscription = this.dealService.getDeals().subscribe(
+    //   (data) => {
+    //     //console.log(data);
+    //     this.deals = data;
+    //   }
+    // );
   }
 
   ngOnInit(): void {
@@ -57,57 +58,30 @@ export class ProductCardComponent implements OnInit {
       (list) => {
         this.wishlistCount = list.length;
         this.wishlistProducts = list;
-        this.subscription = this.dealService.getDeals().subscribe(
-          (data) => {
-            this.deals = data;
+      });
+    this.cartService.getFullCart(this.currUser.userId!).subscribe(
+      (cart) => {
+        let price = 0;
+            cart.forEach(e => price += e.productPrice);
+            let icart = {
+              cartCount: cart.length,
+              products: cart,
+              totalPrice: price
+            }
+            this.cartService.setCart(icart);
+
+            this.cartProducts = cart;
+            this.totalPrice = price;
           }
-        )
-      }
-    );
+        );
   }
 
   addToCart(product: Product): void {
-    let inCart = false;
-
-    this.products.forEach(
-      (element) => {
-        if (element.product == product) {
-          ++element.quantity;
-          let cart = {
-            cartCount: this.cartCount + 1,
-            products: this.products,
-            totalPrice: this.totalPrice + product.productPrice
-          };
-          this.productService.setCart(cart);
-          inCart = true;
-          return;
-        };
-      }
-    );
-
-//      });
-//    this.cartService.getFullCart(this.currUser.userId!).subscribe(
-//      (cart) => {
-//        let price = 0;
-//        cart.forEach(e => price += e.productPrice);
-//        let icart = {
-//          cartCount: cart.length,
-//          products: cart,
-//          totalPrice: price
-//        }
-//        this.cartService.setCart(icart);
-//
-//        this.cartProducts = cart;
-//        this.totalPrice = price;
-//      });
-//  }
-//
-//  addToCart(product: Product): void {
-
 
     let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
     this.cartService.addItem(cartItem).subscribe(data => {
       //console.log(data);
+      console.log('Adding item to cart');
       this.ngOnInit();
     });
 
@@ -184,10 +158,6 @@ export class ProductCardComponent implements OnInit {
       }
       newPriceS = temp;
       newPriceN = +newPriceS;
-      if (isNaN(newPriceN)) {
-        alert(`The input you gave is not a known command or is not a number. \n(input = ${newPriceS})\nNo deal was made.`);
-        return product;
-      }
       c = confirm(`Are you sure you want to set the price of ${product.productName} to $${newPriceN}?`);
     }
 

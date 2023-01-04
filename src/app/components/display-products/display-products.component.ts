@@ -6,10 +6,8 @@ import { DealService } from '../../services/deal.service';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { CartService } from 'src/app/services/cart.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
 import { Wishlist } from 'src/app/models/wishlist';
-import { WishlistService } from 'src/app/services/wishlist.service';
 
 
 @Component({
