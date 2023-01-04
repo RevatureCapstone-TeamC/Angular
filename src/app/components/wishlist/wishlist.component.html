@@ -12,7 +12,6 @@
             <td>{{product.productDescription}}</td>
             <td>${{product.productPrice | number:'1.2-2'}}</td>
             <button class="btn btn-danger" (click)="removeItem(product)">Remove Item</button>
-            <button class="btn btn-warning" (click)="addToCart(product)">Add to Cart</button>
         </tr>
     </tbody>
 </table>

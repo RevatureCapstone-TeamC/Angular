@@ -7,6 +7,8 @@ import { WishlistService } from '../../services/wishlist.service';
 import { Wishlist } from '../../models/wishlist';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/user';
+import { CartService } from 'src/app/services/cart.service';
+import { Cart } from 'src/app/models/cart';
 
 @Component({
   selector: 'app-wishlist',
@@ -19,7 +21,6 @@ export class WishlistComponent implements OnInit {
   product: Product[] = [];
   wishlist: Product[] = [];
   currUser: User = new User(0, '', '', '', '', false);
-
 
   constructor(private wishlistService: WishlistService, private authService: AuthService, private dealService: DealService, private productService: ProductService) { }
 
@@ -106,6 +107,9 @@ export class WishlistComponent implements OnInit {
     /*old code
     if (this.currUser.userId) {
       this.wishlistService.getList(this.currUser.userId).subscribe(
+    this.wishlistService.removeItem(product.productId).subscribe(data => {
+      console.log(data);
+      this.wishlistService.getList(this.currUser.userId!).subscribe(
         (wishlist) => {
           this.product = wishlist;
           console.log(this.wishlist);
@@ -119,10 +123,6 @@ export class WishlistComponent implements OnInit {
     }
     */
     this.ngOnInit();
+    });
   }
-
-  addToCart(product: Product): void {
-
-  }
-
 }
