@@ -78,7 +78,7 @@ export class ProductCardComponent implements OnInit {
 
     let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
     this.cartService.addItem(cartItem).subscribe(data => {
-      console.log(data);
+      //console.log(data);
       this.ngOnInit();
     });
 

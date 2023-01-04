@@ -69,10 +69,4 @@ export class WishlistComponent implements OnInit {
         });
     });
   }
-
-  addToCart(product: Product): void {
-    let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
-    this.cartService.addItem(cartItem).subscribe(data => console.log(data));
-  }
-
 }

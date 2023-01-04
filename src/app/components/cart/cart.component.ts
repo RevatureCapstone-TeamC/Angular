@@ -55,8 +55,8 @@ export class CartComponent implements OnInit {
 
   emptyCart(): void {
 
-    this.cartProducts.forEach(e => {
-      this.cartService.removeItem(e.productId).subscribe(data => console.log(data));
+    this.products.forEach(e => {
+      this.cartService.removeItem(e.productId).subscribe(data => { console.log(data); this.ngOnInit(); });
     });
 
     //this.router.navigate(['/home']);
