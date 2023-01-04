@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CartService } from 'src/app/services/cart.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-checkout',
@@ -18,6 +21,7 @@ export class CheckoutComponent implements OnInit {
   totalPrice!: number;
   cartProducts: Product[] = [];
   finalProducts: { id: number, quantity: number }[] = [];
+  currUser: User = new User(0, '', '', '', '', false);
 
   checkoutForm = new FormGroup({
     //fname: new FormControl('', Validators.required),
@@ -34,18 +38,20 @@ export class CheckoutComponent implements OnInit {
   });
 
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(private productService: ProductService,
+    private router: Router,
+    private cartService: CartService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.productService.getCart().subscribe(
-      (cart) => {
-        this.products = cart.products;
-        this.products.forEach(
-          (element) => this.cartProducts.push(element.product)
-        );
-        this.totalPrice = cart.totalPrice;
-      }
-    );
+    this.currUser = this.authService.findUser();
+
+    //this.cartService.reloadCart();
+    this.cartService.getCart().subscribe((cart) => {
+      this.cartProducts = cart.products;
+      this.totalPrice = cart.totalPrice;
+    });
   }
 
   onSubmit(): void {
@@ -56,35 +62,12 @@ export class CheckoutComponent implements OnInit {
     else {
       console.log(this.checkoutForm.valid);
     }
-    return;
 
-    this.products.forEach(
-      (element) => {
-        const id = element.product.productId;
-        const quantity = element.quantity
-        this.finalProducts.push({ id, quantity })
-      }
-    );
+    this.cartProducts.forEach(e => {
+      this.cartService.removeItem(e.productId).subscribe(data => console.log(data));
+    });
 
-    if (this.finalProducts.length > 0) {
-      this.productService.purchase(this.finalProducts).subscribe(
-        (resp) => console.log(resp),
-        (err) => console.log(err),
-        () => {
-          let cart = {
-            cartCount: 0,
-            products: [],
-            totalPrice: 0.00
-          };
-          this.productService.setCart(cart);
-          this.router.navigate(['/home']);
-        }
-      );
-
-    } else {
-      this.router.navigate(['/home']);
-    }
-    //}
+    this.router.navigate(['/home']);
   }
 
 }

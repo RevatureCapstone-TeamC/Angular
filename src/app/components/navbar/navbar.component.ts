@@ -4,6 +4,8 @@ import { User } from '../../models/user';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { ProductService } from '../../services/product.service';
+import { CartService } from 'src/app/services/cart.service';
+import { WishlistService } from 'src/app/services/wishlist.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +21,7 @@ export class NavbarComponent implements OnInit {
   currUsername?: string = '';
   currUser: User = new User(0, '', '', '', '', false);
 
-  constructor(private authService: AuthService, private router: Router, private productService: ProductService) {
+  constructor(private authService: AuthService, private router: Router, private wishlistService: WishlistService, private cartService: CartService) {
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
         this.currUser = this.authService.findUser();
@@ -28,8 +30,11 @@ export class NavbarComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.subscription = this.productService.getCart().subscribe(
+    this.subscription = this.cartService.getCart().subscribe(
       (cart) => this.cartCount = cart.cartCount
+    );
+    this.subscription = this.wishlistService.getWishlist().subscribe(
+      (wishlist) => this.wishlistCount = wishlist.wishlistCount
     );
   }
 

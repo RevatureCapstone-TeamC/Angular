@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-cart',
@@ -10,35 +13,53 @@ import { ProductService } from '../../services/product.service';
 })
 export class CartComponent implements OnInit {
 
-  products: {
-    product: Product,
-    quantity: number
-  }[] = [];
+  products: Product[] = [];
   totalPrice!: number;
   cartProducts: Product[] = [];
+  currUser: User = new User(0, '', '', '', '', false);
 
-  constructor(private productService: ProductService, private router: Router) { }
+  constructor(private router: Router,
+    private cartService: CartService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.productService.getCart().subscribe(
+    this.currUser = this.authService.findUser();
+
+
+
+    this.cartService.getFullCart(this.currUser.userId!).subscribe(
       (cart) => {
-        this.products = cart.products;
-        this.products.forEach(
-          (element) => this.cartProducts.push(element.product)
-        );
-        this.totalPrice = cart.totalPrice;
+        let price = 0;
+        cart.forEach(e => price += e.productPrice);
+        let icart = {
+          cartCount: cart.length,
+          products: cart,
+          totalPrice: price
+        }
+        this.cartService.setCart(icart);
+        this.products = cart;
+        this.totalPrice = price;
       }
-    );
+    )
+
+
+  }
+
+  removeItem(id: number) {
+    this.cartService.removeItem(id).subscribe((data) => {
+      console.log(data);
+      this.ngOnInit();
+    });
   }
 
   emptyCart(): void {
-    let cart = {
-      cartCount: 0,
-      products: [],
-      totalPrice: 0.00
-    };
-    this.productService.setCart(cart);
-    this.router.navigate(['/home']);
-  }
 
+    this.products.forEach(e => {
+      this.cartService.removeItem(e.productId).subscribe(data => { console.log(data); this.ngOnInit(); });
+    });
+
+    //this.router.navigate(['/home']);
+
+  }
 }

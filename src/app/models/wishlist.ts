@@ -1,5 +1,3 @@
-import { Product } from "./product";
-
 export class Wishlist {
     wishlistId?: number;
     fk_ProductId?: number;
