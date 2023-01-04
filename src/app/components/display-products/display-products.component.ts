@@ -55,6 +55,7 @@ export class DisplayProductsComponent implements OnInit {
       (err) => console.log(err),
       () => console.log("Products Retrieved")
     );
+
     this.cartService.getFullCart(this.currUser.userId!).subscribe(
       (cart) => {
         let price = 0;
@@ -67,6 +68,7 @@ export class DisplayProductsComponent implements OnInit {
         this.cartService.setCart(icart);
       }
     );
+
     this.wishlistService.getList(this.currUser.userId!).subscribe(
       (wishlist) => {
         let iwish = {
@@ -75,7 +77,7 @@ export class DisplayProductsComponent implements OnInit {
         };
         this.wishlistService.setWishlist(iwish);
       }
-    )
+    );
   }
 
 }

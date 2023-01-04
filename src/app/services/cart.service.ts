@@ -28,12 +28,10 @@ export class CartService {
   private _cart$ = this._cart.asObservable();
 
   getCart(): Observable<ICart> {
-    console.log("cart gotten")
     return this._cart$;
   }
 
   setCart(latestValue: ICart) {
-    console.log("cart set")
     return this._cart.next(latestValue);
   }
 
@@ -52,7 +50,6 @@ export class CartService {
   }
 
   reloadCart() {
-    console.log("cart reloaded");
     this.getFullCart(this.currUser.userId!).subscribe(data => {
       let price = 0;
       data.forEach(e => price += e.productPrice);
