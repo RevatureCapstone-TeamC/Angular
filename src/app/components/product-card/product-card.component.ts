@@ -53,7 +53,6 @@ export class ProductCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.subscription = this.wishlistService.getList(this.currUser.userId!).subscribe(
       (list) => {
         this.wishlistCount = list.length;
@@ -62,35 +61,83 @@ export class ProductCardComponent implements OnInit {
     this.cartService.getFullCart(this.currUser.userId!).subscribe(
       (cart) => {
         let price = 0;
-            cart.forEach(e => price += e.productPrice);
-            let icart = {
-              cartCount: cart.length,
-              products: cart,
-              totalPrice: price
-            }
-            this.cartService.setCart(icart);
+        cart.forEach(e => price += e.productPrice);
+        let icart = {
+          cartCount: cart.length,
+          products: cart,
+          totalPrice: price
+        }
+        this.cartService.setCart(icart);
 
-            this.cartProducts = cart;
-            this.totalPrice = price;
+        this.cartProducts = cart;
+        this.totalPrice = price;
+
+        cart.forEach(c => {
+          let inCart = false;
+          this.products.forEach(
+            (e) => {
+              if (e.product.productName == c.productName) {
+                ++e.quantity;
+                inCart = true;
+              };
+            }
+          );
+          if (inCart == false) {
+            let newProduct = {
+              product: c,
+              quantity: 1
+            };
+            this.products.push(newProduct);
           }
-        );
+        });
+      }
+    );
   }
 
   addToCart(product: Product): void {
 
+    let enoughStock = true;
+
+    this.products.forEach(e => {
+      if (e.product.productName == product.productName) {
+        if ((e.quantity - 1) >= product.productQuantity) {
+          enoughStock = false;
+        }
+      }
+    });
+
+    if (enoughStock) {
+      this.addProduct(product);
+    }
+    else {
+      alert("Not enough stock");
+    }
+  }
+
+  addProduct(product: Product) {
     let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
     this.cartService.addItem(cartItem).subscribe(data => {
       //console.log(data);
       console.log('Adding item to cart');
+
+      let inCart = false;
+      this.products.forEach(
+        (element) => {
+          if (element.product == product) {
+            ++element.quantity;
+            inCart = true;
+          };
+        }
+      );
+      if (inCart == false) {
+        let newProduct = {
+          product: product,
+          quantity: 1
+        };
+        this.products.push(newProduct);
+      }
       this.ngOnInit();
     });
-
-
-    // this.cartService.getCart().subscribe((cart) => {
-    //   this.cartProducts = cart.products;
-    //   this.totalPrice = cart.totalPrice;
-    // });
-
   }
 
   addToWishlist(product: Product): void {

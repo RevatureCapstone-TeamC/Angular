@@ -15,7 +15,10 @@ import { Subscription } from 'rxjs';
 })
 export class CartComponent implements OnInit {
 
-  products: Product[] = [];
+  products: {
+    product: Product,
+    quantity: number
+  }[] = [];;
   totalPrice!: number;
   cartProducts: Product[] = [];
   currUser: User = new User(0, '', '', '', '', false);
@@ -40,22 +43,51 @@ export class CartComponent implements OnInit {
           totalPrice: price
         }
         this.cartService.setCart(icart);
-        this.products = cart;
+        this.cartProducts = cart;
         this.totalPrice = price;
+
+        cart.forEach(c => {
+          let inCart = false;
+          this.products.forEach(
+            (e) => {
+              if (e.product.productName == c.productName) {
+                ++e.quantity;
+                inCart = true;
+              };
+            }
+          );
+          if (inCart == false) {
+            let newProduct = {
+              product: c,
+              quantity: 1
+            };
+            this.products.push(newProduct);
+          }
+        });
       }
     );
   }
 
-  removeItem(id: number) {
-    this.cartService.removeItem(id).subscribe((data) => {
-      console.log(data);
-      this.ngOnInit();
+  removeItem(product: Product) {
+    this.cartProducts.forEach(e => {
+      if (e.productName == product.productName) {
+        this.cartService.removeItem(product.productId).subscribe((data) => {
+          console.log(data);
+          this.products = [];
+          this.ngOnInit();
+
+        });
+      }
     });
   }
 
   emptyCart(): void {
-    this.products.forEach(e => {
-      this.cartService.removeItem(e.productId).subscribe(data => { console.log(data); this.ngOnInit(); });
+    this.cartProducts.forEach(e => {
+      this.cartService.removeItem(e.productId).subscribe(data => {
+        console.log(data);
+        this.products = [];
+        this.ngOnInit();
+      });
     });
   }
 }
