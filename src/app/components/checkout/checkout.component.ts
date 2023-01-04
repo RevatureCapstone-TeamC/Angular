@@ -21,7 +21,7 @@ export class CheckoutComponent implements OnInit {
   }[] = [];
   totalPrice: number = 0;
   cartProducts: Product[] = [];
-  finalProducts: { id: number, quantity: number }[] = [];
+  finalProducts: Product[] = [];
   currUser: User = new User(0, '', '', '', '', false);
   subscription: Subscription = new Subscription();
 
@@ -48,11 +48,6 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.currUser = this.authService.findUser();
-
-    // this.subscription = this.cartService.getCart().subscribe((cart) => {
-    //   this.cartProducts = cart.products;
-    //   this.totalPrice = cart.totalPrice;
-    // });
     this.cartService.getFullCart(this.currUser.userId!).subscribe(
       (cart) => {
         let price = 0;
@@ -63,20 +58,52 @@ export class CheckoutComponent implements OnInit {
           totalPrice: price
         }
         this.cartService.setCart(icart);
-        this.totalPrice = price;
         this.cartProducts = cart;
+        this.totalPrice = price;
+
+        cart.forEach(c => {
+          let inCart = false;
+          this.products.forEach(
+            (e) => {
+              if (e.product.productName == c.productName) {
+                ++e.quantity;
+                inCart = true;
+              };
+            }
+          );
+          if (inCart == false) {
+            let newProduct = {
+              product: c,
+              quantity: 1
+            };
+            this.products.push(newProduct);
+          }
+        });
       }
     )
   }
 
   onSubmit(): void {
 
-    this.productService.purchase(this.cartProducts).subscribe(data => {
-      this.cartProducts.forEach(e => {
-        this.cartService.removeItem(e.productId).subscribe(data => console.log(data));
-      });
-      this.router.navigate(['/home']);
+    this.products.forEach(e => {
+      let finalProduct: Product = e.product;
+      finalProduct.productQuantity = e.quantity;
+      this.finalProducts.push(finalProduct);
     });
+    console.log(this.finalProducts);
+
+    this.productService.purchase(this.finalProducts).subscribe(
+      res => {
+        console.log(res);
+        // this.cartProducts.forEach(e => {
+        //   this.cartService.removeItem(e.productId).subscribe(data => console.log(data));
+        // });
+        //this.router.navigate(['/home']);
+      },
+      err => {
+        alert("One or more of your cart items are out of stock.");
+        console.log(err);
+      });
 
   }
 

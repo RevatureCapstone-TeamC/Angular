@@ -6,15 +6,19 @@
         <th scope="col">Name</th>
         <th scope="col">Description</th>
         <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Stock</th>
       </tr>
     </thead>
     <tbody id="cart-table-body">
         <tr *ngFor="let product of products;">
             <!-- <td>{{product.productId}}</td> -->
-            <td>{{product.productName}}</td>
-            <td>{{product.productDescription}}</td>
-            <td>{{product.productPrice}}</td>
-            <button class="btn btn-warning" (click)="removeItem(product.productId)">Remove Item</button>
+            <td>{{product.product.productName}}</td>
+            <td>{{product.product.productDescription}}</td>
+            <td>{{product.product.productPrice}}</td>
+            <td>{{product.quantity}}</td>
+            <td>{{product.product.productQuantity}}</td>
+            <button class="btn btn-warning" (click)="removeItem(product.product)">Remove Item</button>
         </tr>
     </tbody>
 </table>
