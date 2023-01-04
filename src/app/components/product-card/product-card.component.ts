@@ -57,24 +57,53 @@ export class ProductCardComponent implements OnInit {
       (list) => {
         this.wishlistCount = list.length;
         this.wishlistProducts = list;
-      });
-    this.cartService.getFullCart(this.currUser.userId!).subscribe(
-      (cart) => {
-        let price = 0;
-        cart.forEach(e => price += e.productPrice);
-        let icart = {
-          cartCount: cart.length,
-          products: cart,
-          totalPrice: price
-        }
-        this.cartService.setCart(icart);
-
-        this.cartProducts = cart;
-        this.totalPrice = price;
-      });
+        this.subscription = this.dealService.getDeals().subscribe(
+          (data) => {
+            this.deals = data;
+          }
+        )
+      }
+    );
   }
 
   addToCart(product: Product): void {
+    let inCart = false;
+
+    this.products.forEach(
+      (element) => {
+        if (element.product == product) {
+          ++element.quantity;
+          let cart = {
+            cartCount: this.cartCount + 1,
+            products: this.products,
+            totalPrice: this.totalPrice + product.productPrice
+          };
+          this.productService.setCart(cart);
+          inCart = true;
+          return;
+        };
+      }
+    );
+
+//      });
+//    this.cartService.getFullCart(this.currUser.userId!).subscribe(
+//      (cart) => {
+//        let price = 0;
+//        cart.forEach(e => price += e.productPrice);
+//        let icart = {
+//          cartCount: cart.length,
+//          products: cart,
+//          totalPrice: price
+//        }
+//        this.cartService.setCart(icart);
+//
+//        this.cartProducts = cart;
+//        this.totalPrice = price;
+//      });
+//  }
+//
+//  addToCart(product: Product): void {
+
 
     let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
     this.cartService.addItem(cartItem).subscribe(data => {
@@ -155,6 +184,10 @@ export class ProductCardComponent implements OnInit {
       }
       newPriceS = temp;
       newPriceN = +newPriceS;
+      if (isNaN(newPriceN)) {
+        alert(`The input you gave is not a known command or is not a number. \n(input = ${newPriceS})\nNo deal was made.`);
+        return product;
+      }
       c = confirm(`Are you sure you want to set the price of ${product.productName} to $${newPriceN}?`);
     }
 
@@ -187,6 +220,35 @@ export class ProductCardComponent implements OnInit {
       product.productPrice = newPriceN;
     }
 
+    return product;
+  }
+
+  resetDeal(product: Product): Product {
+    let dealFound = false;
+    console.log('Deal Array Length: ' + this.deals.length);
+    for (let i = 0; i < this.deals.length; i++) {
+      if (product.productId == this.deals[i].fk_Product_Id) {
+        dealFound = true;
+        console.log('Deal Found');
+        this.dealService.deleteDeal(this.deals[i].dealId || 0).subscribe(
+          (data) => {
+            console.log('Deal deleted');
+          }
+        )
+        this.deals[i].dealId = 0;
+        this.deals[i].fk_Product_Id = 0;
+        this.deals[i].salePrice = 0;
+      }
+    }
+    if (!dealFound) {
+      alert(`No deal was found for ${product.productName}`);
+    }
+    console.log('Getting the original price');
+    this.productService.getSingleProduct(product.productId).subscribe(
+      (data) => {
+        product.productPrice = data.productPrice;
+      }
+    );
     return product;
   }
 
