@@ -41,7 +41,7 @@ export class CartComponent implements OnInit {
         this.products = cart;
         this.totalPrice = price;
       }
-    )
+    );
 
 
   }
@@ -54,12 +54,9 @@ export class CartComponent implements OnInit {
   }
 
   emptyCart(): void {
-
     this.products.forEach(e => {
       this.cartService.removeItem(e.productId).subscribe(data => { console.log(data); this.ngOnInit(); });
     });
-
-    //this.router.navigate(['/home']);
 
   }
 }
