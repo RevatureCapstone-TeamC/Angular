@@ -95,23 +95,27 @@ export class ProductCardComponent implements OnInit {
   }
 
   addToCart(product: Product): void {
+    if (this.currUser.userId) {
+      let enoughStock = true;
 
-    let enoughStock = true;
-
-    this.products.forEach(e => {
-      if (e.product.productName == product.productName) {
-        if ((e.quantity - 1) >= product.productQuantity) {
-          enoughStock = false;
+      this.products.forEach(e => {
+        if (e.product.productName == product.productName) {
+          if ((e.quantity - 1) >= product.productQuantity) {
+            enoughStock = false;
+          }
         }
-      }
-    });
+      });
 
-    if (enoughStock) {
-      this.addProduct(product);
+      if (enoughStock) {
+        this.addProduct(product);
+      }
+      else {
+        alert("Not enough stock");
+      }
+    } else {
+      alert("Please log in or register.");
     }
-    else {
-      alert("Not enough stock");
-    }
+
   }
 
   addProduct(product: Product) {
@@ -156,7 +160,7 @@ export class ProductCardComponent implements OnInit {
       });
     }
     else {
-      alert("Please log in");
+      alert("Please log in or register.");
     }
 
   }
