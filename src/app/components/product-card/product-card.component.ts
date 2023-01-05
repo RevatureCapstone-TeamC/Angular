@@ -206,7 +206,8 @@ export class ProductCardComponent implements OnInit {
       }
       newPriceS = temp;
       newPriceN = +newPriceS;
-      c = confirm(`Are you sure you want to set the price of ${product.productName} to $${newPriceN}?`);
+      newPriceN.toFixed(2);
+      c = confirm(`Are you sure you want to set the price of ${product.productName} to $${newPriceN.toFixed(2)}?`);
     }
 
     if (c) {

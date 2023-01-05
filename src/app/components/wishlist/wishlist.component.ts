@@ -99,27 +99,27 @@ export class WishlistComponent implements OnInit {
         }
         this.cartService.setCart(icart);
 
-        this.cartProducts = cart;
-        this.totalPrice = price;
+        // this.cartProducts = cart;
+        // this.totalPrice = price;
 
-        cart.forEach(c => {
-          let inCart = false;
-          this._products.forEach(
-            (e) => {
-              if (e.product.productName == c.productName) {
-                ++e.quantity;
-                inCart = true;
-              };
-            }
-          );
-          if (inCart == false) {
-            let newProduct = {
-              product: c,
-              quantity: 1
-            };
-            this._products.push(newProduct);
-          }
-        });
+        // cart.forEach(c => {
+        //   let inCart = false;
+        //   this._products.forEach(
+        //     (e) => {
+        //       if (e.product.productName == c.productName) {
+        //         ++e.quantity;
+        //         inCart = true;
+        //       };
+        //     }
+        //   );
+        //   if (inCart == false) {
+        //     let newProduct = {
+        //       product: c,
+        //       quantity: 1
+        //     };
+        //     this._products.push(newProduct);
+        //   }
+        // });
       }
     );
 

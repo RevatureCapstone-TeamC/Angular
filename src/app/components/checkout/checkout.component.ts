@@ -102,6 +102,7 @@ export class CheckoutComponent implements OnInit {
       },
       err => {
         alert("One or more of your cart items are out of stock.");
+        this.router.navigate(['/cart']);
       });
 
   }
