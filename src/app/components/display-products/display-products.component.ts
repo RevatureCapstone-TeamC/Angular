@@ -61,7 +61,7 @@ export class DisplayProductsComponent implements OnInit {
       }
     );
 
-    this.productService.getProducts().subscribe (
+    this.productService.getProducts().subscribe(
       (prod) => {
         this.currUser = this.authService.findUser();
         this.wishlistService.getList(this.currUser.userId!).subscribe(
@@ -72,8 +72,8 @@ export class DisplayProductsComponent implements OnInit {
             this.dealService.getDeals().subscribe(
               (data) => {
                 this.deals = data;
-                console.log('Checking for products that have deals and seeing if they are wishlisted.');
-                console.log(`Products: ${prod.length}, Deals: ${this.deals.length}, WishList: ${this.wishlistCount}`);
+                //console.log('Checking for products that have deals and seeing if they are wishlisted.');
+                //console.log(`Products: ${prod.length}, Deals: ${this.deals.length}, WishList: ${this.wishlistCount}`);
                 let alertStr = '';
                 for (let d = 0; d < this.deals.length; d++) {
                   for (let p = 0; p < prod.length; p++) {
