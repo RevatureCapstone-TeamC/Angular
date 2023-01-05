@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
       this.validPassword = 'Please enter a password.';
       valid = false;
     } else {
+      console.log(this.loginForm.get('password')?.value);
       this.validPassword = '';
     }
 
