@@ -95,10 +95,10 @@ export class CheckoutComponent implements OnInit {
     this.productService.purchase(this.finalProducts).subscribe(
       res => {
         console.log(res);
-        // this.cartProducts.forEach(e => {
-        //   this.cartService.removeItem(e.productId).subscribe(data => console.log(data));
-        // });
-        //this.router.navigate(['/home']);
+        this.cartProducts.forEach(e => {
+          this.cartService.removeItem(e.productId).subscribe(data => console.log(data));
+        });
+        this.router.navigate(['/home']);
       },
       err => {
         alert("One or more of your cart items are out of stock.");
