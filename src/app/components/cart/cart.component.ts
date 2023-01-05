@@ -23,6 +23,7 @@ export class CartComponent implements OnInit {
   cartProducts: Product[] = [];
   currUser: User = new User(0, '', '', '', '', false);
   subscription!: Subscription;
+  loggedIn = false;
 
   constructor(private router: Router,
     private cartService: CartService,
@@ -33,6 +34,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.currUser = this.authService.findUser();
+    if (this.currUser.userId) this.loggedIn = true;
     this.cartService.getFullCart(this.currUser.userId!).subscribe(
       (cart) => {
         let price = 0;
