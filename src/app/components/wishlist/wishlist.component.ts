@@ -61,7 +61,7 @@ export class WishlistComponent implements OnInit {
 
                 //Set global variables and update services
                 this.product = wlist;
-                console.log(this.product);
+                //console.log(this.product);
 
                 let iwish = {
                   wishlistCount: wlist.length,
@@ -83,27 +83,7 @@ export class WishlistComponent implements OnInit {
   }
 
   removeItem(product: Product): void {
-    console.log("removeItem called in component");
-    this.wishlistService.removeItem(product.productId).subscribe(data => console.log(data));
-
-    /*old code
-    if (this.currUser.userId) {
-      this.wishlistService.getList(this.currUser.userId).subscribe(
-    this.wishlistService.removeItem(product.productId).subscribe(data => {
-      console.log(data);
-      this.wishlistService.getList(this.currUser.userId!).subscribe(
-        (wishlist) => {
-          this.product = wishlist;
-          console.log(this.wishlist);
-
-          let iwish = {
-            wishlistCount: wishlist.length,
-            products: wishlist
-          }
-          this.wishlistService.setWishlist(iwish);
-        });
-    }
-    */
+    this.wishlistService.removeItem(product.productId).subscribe();
     this.ngOnInit();
   }
 }

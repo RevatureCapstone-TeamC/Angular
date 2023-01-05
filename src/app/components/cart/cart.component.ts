@@ -71,16 +71,19 @@ export class CartComponent implements OnInit {
   }
 
   removeItem(product: Product) {
-    this.cartProducts.forEach(e => {
-      if (e.productName == product.productName) {
+    for (var i = 0; i < this.cartProducts.length; i++) {
+      if (this.cartProducts[i].productName == product.productName) {
+        console.log(this.cartProducts[i].productName);
         this.cartService.removeItem(product.productId).subscribe((data) => {
           console.log(data);
           this.products = [];
           this.ngOnInit();
-
         });
+        break;
+      } else {
+        continue;
       }
-    });
+    }
   }
 
   emptyCart(): void {
@@ -91,5 +94,6 @@ export class CartComponent implements OnInit {
         this.ngOnInit();
       });
     });
+    this.router.navigate(['/home']);
   }
 }
