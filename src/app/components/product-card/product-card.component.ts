@@ -117,9 +117,6 @@ export class ProductCardComponent implements OnInit {
   addProduct(product: Product) {
     let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
     this.cartService.addItem(cartItem).subscribe(data => {
-      //console.log(data);
-      console.log('Adding item to cart');
-
       let inCart = false;
       this.products.forEach(
         (element) => {
@@ -154,7 +151,7 @@ export class ProductCardComponent implements OnInit {
         });
         if (foundItem.productId == 0) {
           let wishlistEntry: Wishlist = new Wishlist(product.productId, this.currUser.userId!);
-          this.wishlistService.addItem(wishlistEntry).subscribe(data => console.log(data));
+          this.wishlistService.addItem(wishlistEntry).subscribe();
         }
       });
     }
