@@ -44,12 +44,12 @@ export class ProductCardComponent implements OnInit {
   ) {
     this.currUser = this.authService.findUser();
     this.admin = this.currUser.ifAdmin || false;
-    // this.subscription = this.dealService.getDeals().subscribe(
-    //   (data) => {
-    //     //console.log(data);
-    //     this.deals = data;
-    //   }
-    // );
+    this.subscription = this.dealService.getDeals().subscribe(
+      (data) => {
+        //console.log(data);
+        this.deals = data;
+      }
+    );
   }
 
   ngOnInit(): void {
