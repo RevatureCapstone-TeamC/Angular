@@ -8,7 +8,7 @@ export const environment = {
   baseUrl: "https://webapi-p3.azurewebsites.net",
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://ecommerce-p3.azurewebsites.net',
+    'Access-Control-Allow-Origin': 'http://localhost:4200',
   },
 };
 
