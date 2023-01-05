@@ -22,7 +22,14 @@ export class WishlistComponent implements OnInit {
   wishlist: Product[] = [];
   currUser: User = new User(0, '', '', '', '', false);
 
-  constructor(private wishlistService: WishlistService, private authService: AuthService, private dealService: DealService, private productService: ProductService) { }
+  cartProducts: Product[] = [];
+  totalPrice: number = 0;
+  _products: {
+    product: Product,
+    quantity: number
+  }[] = [];
+
+  constructor(private wishlistService: WishlistService, private authService: AuthService, private dealService: DealService, private productService: ProductService, private cartService: CartService) { }
 
   ngOnInit(): void {
     this.currUser = this.authService.findUser();
@@ -80,6 +87,42 @@ export class WishlistComponent implements OnInit {
       products: this.product
     };
     this.wishlistService.setWishlist(list);
+
+    this.cartService.getFullCart(this.currUser.userId!).subscribe(
+      (cart) => {
+        let price = 0;
+        cart.forEach(e => price += e.productPrice);
+        let icart = {
+          cartCount: cart.length,
+          products: cart,
+          totalPrice: price
+        }
+        this.cartService.setCart(icart);
+
+        this.cartProducts = cart;
+        this.totalPrice = price;
+
+        cart.forEach(c => {
+          let inCart = false;
+          this._products.forEach(
+            (e) => {
+              if (e.product.productName == c.productName) {
+                ++e.quantity;
+                inCart = true;
+              };
+            }
+          );
+          if (inCart == false) {
+            let newProduct = {
+              product: c,
+              quantity: 1
+            };
+            this._products.push(newProduct);
+          }
+        });
+      }
+    );
+
   }
 
   removeItem(product: Product): void {
