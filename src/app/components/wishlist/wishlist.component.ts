@@ -122,6 +122,7 @@ export class WishlistComponent implements OnInit {
         });
       }
     );
+
   }
 
   removeItem(product: Product): void {
