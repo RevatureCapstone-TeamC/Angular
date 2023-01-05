@@ -27,6 +27,7 @@ export class ProductCardComponent implements OnInit {
   }[] = [];
   cartProducts: Product[] = [];
   wishlistProducts: Product[] = [];
+  allproducts: Product[] = [];
   subscription!: Subscription;
   totalPrice: number = 0;
   currUser: User = new User(0, '', '', '', '', false);
@@ -53,10 +54,15 @@ export class ProductCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription = this.wishlistService.getList(this.currUser.userId!).subscribe(
+    this.wishlistService.getList(this.currUser.userId!).subscribe(
       (list) => {
         this.wishlistCount = list.length;
         this.wishlistProducts = list;
+        let iwish = {
+          wishlistCount: this.wishlistCount,
+          products: this.wishlistProducts
+        }
+        this.wishlistService.setWishlist(iwish);
       });
     this.cartService.getFullCart(this.currUser.userId!).subscribe(
       (cart) => {
@@ -92,20 +98,20 @@ export class ProductCardComponent implements OnInit {
         });
       }
     );
+    this.productService.getProducts().subscribe(data => this.allproducts = data);
   }
 
   addToCart(product: Product): void {
     if (this.currUser.userId) {
       let enoughStock = true;
 
-      this.products.forEach(e => {
-        if (e.product.productName == product.productName) {
-          if ((e.quantity - 1) >= product.productQuantity) {
+      this.allproducts.forEach(e => {
+        if (e.productName == product.productName) {
+          if ((e.productQuantity - 1) <= 0) {
             enoughStock = false;
           }
         }
       });
-
       if (enoughStock) {
         this.addProduct(product);
       }
@@ -155,7 +161,7 @@ export class ProductCardComponent implements OnInit {
         });
         if (foundItem.productId == 0) {
           let wishlistEntry: Wishlist = new Wishlist(product.productId, this.currUser.userId!);
-          this.wishlistService.addItem(wishlistEntry).subscribe();
+          this.wishlistService.addItem(wishlistEntry).subscribe(data => this.ngOnInit());
         }
       });
     }
