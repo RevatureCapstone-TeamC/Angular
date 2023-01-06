@@ -5,12 +5,12 @@
       <p class="card-text">{{productInfo.productDescription}}</p>
     </div>
     <div class="input-group input-group-sm mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
-      </div>
-      <!-- <input type="number:'1.2-2'" class="form-control" aria-label="Sizing example input" [value]="productInfo.productPrice" aria-describedby="inputGroup-sizing-sm" disabled> -->
-      {{productInfo.productPrice | number:'1.2-2'}}
-    </div>
+      <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm">$</span>
+          </div>
+          <input type="number" class="form-control" aria-label="Sizing example input" [value]="productInfo.productPrice" aria-describedby="inputGroup-sizing-sm" disabled>
+        </div>
     <div class="input-group input-group-sm mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text" id="inputGroup-sizing-sm">Quantity in Stock</span>
