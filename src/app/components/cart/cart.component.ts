@@ -75,7 +75,6 @@ export class CartComponent implements OnInit {
       if (this.cartProducts[i].productName == product.productName) {
         console.log(this.cartProducts[i].productName);
         this.cartService.removeItem(product.productId).subscribe((data) => {
-          console.log(data);
           this.products = [];
           this.ngOnInit();
         });

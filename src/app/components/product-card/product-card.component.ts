@@ -56,6 +56,7 @@ export class ProductCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.wishlistService.getList(this.currUser.userId!).subscribe(
       (list) => {
         this.wishlistCount = list.length;
@@ -66,6 +67,10 @@ export class ProductCardComponent implements OnInit {
         }
         this.wishlistService.setWishlist(iwish);
       });
+
+    this.productService.getProducts().subscribe(data => this.allproducts = data);
+
+    this.products = [];
     this.cartService.getFullCart(this.currUser.userId!).subscribe(
       (cart) => {
         let price = 0;
@@ -79,6 +84,7 @@ export class ProductCardComponent implements OnInit {
 
         this.cartProducts = cart;
         this.totalPrice = price;
+
 
         cart.forEach(c => {
           let inCart = false;
@@ -100,21 +106,20 @@ export class ProductCardComponent implements OnInit {
         });
       }
     );
-    this.productService.getProducts().subscribe(data => this.allproducts = data);
-
   }
 
   addToCart(product: Product): void {
     if (this.currUser.userId) {
       let enoughStock = true;
 
-      this.allproducts.forEach(e => {
-        if (e.productName == product.productName) {
-          if (e.productQuantity == 0) {
+      this.products.forEach(e => {
+        if (e.product.productName == product.productName) {
+          if (e.quantity >= product.productQuantity) {
             enoughStock = false;
           }
         }
       });
+
       if (enoughStock) {
         this.addProduct(product);
       }
@@ -130,25 +135,10 @@ export class ProductCardComponent implements OnInit {
   addProduct(product: Product) {
     let cartItem: Cart = new Cart(product.productId, this.currUser.userId!);
     this.cartService.addItem(cartItem).subscribe(data => {
-      let inCart = false;
-      this.products.forEach(
-        (element) => {
-          if (element.product == product) {
-            ++element.quantity;
-            inCart = true;
-          };
-        }
-      );
-      if (inCart == false) {
-        let newProduct = {
-          product: product,
-          quantity: 1
-        };
-        this.products.push(newProduct);
-      }
       this.ngOnInit();
     });
   }
+
 
   addToWishlist(product: Product): void {
 
