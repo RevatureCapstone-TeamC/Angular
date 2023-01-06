@@ -14,7 +14,7 @@
         <tr *ngFor="let product of products;">
             <td>{{product.product.productName}}</td>
             <td>{{product.product.productDescription}}</td>
-            <td>{{product.product.productPrice}}</td>
+            <td>${{product.product.productPrice | number:'1.2-2'}}</td>
             <td>{{product.quantity}}</td>
             <td>{{product.product.productQuantity}}</td>
             <button class="btn btn-warning" (click)="removeItem(product.product)">Remove Item</button>
