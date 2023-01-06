@@ -109,7 +109,7 @@ export class ProductCardComponent implements OnInit {
 
       this.allproducts.forEach(e => {
         if (e.productName == product.productName) {
-          if ((e.productQuantity - 1) <= 0) {
+          if (e.productQuantity == 0) {
             enoughStock = false;
           }
         }
