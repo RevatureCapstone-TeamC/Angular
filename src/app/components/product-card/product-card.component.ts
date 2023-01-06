@@ -101,6 +101,7 @@ export class ProductCardComponent implements OnInit {
       }
     );
     this.productService.getProducts().subscribe(data => this.allproducts = data);
+
   }
 
   addToCart(product: Product): void {
