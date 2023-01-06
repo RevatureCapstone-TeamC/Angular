@@ -18,8 +18,8 @@
         <input type="number" class="form-control" aria-label="Sizing example input" [value]="productInfo.productQuantity" aria-describedby="inputGroup-sizing-sm" disabled>
       </div>
     <div class="card-body row">
-        <button class="btn btn-outline-success" (click)="addToCart(productInfo)">Add to Cart</button>
-        <button class="btn btn-outline-success" (click)="addToWishlist(productInfo)">Add to Wishlist</button>
+        <button class="btn btn-outline-success" *ngIf="loggedIn" (click)="addToCart(productInfo)">Add to Cart</button>
+        <button class="btn btn-outline-success" *ngIf="loggedIn" (click)="addToWishlist(productInfo)">Add to Wishlist</button>
         <button class="btn btn-outline-success" *ngIf="admin" (click)="productInfo = createDeal(productInfo)">Edit Deals</button>
         <button class="btn btn-outline-success" *ngIf="admin" (click)="productInfo = resetDeal(productInfo)">Reset Deals</button>
     </div>

@@ -20,12 +20,14 @@ export class NavbarComponent implements OnInit {
   userSub!: Subscription;
   currUsername?: string = '';
   currUser: User = new User(0, '', '', '', '', false);
+  loggedIn: boolean = true;
 
   constructor(private authService: AuthService, private router: Router, private wishlistService: WishlistService, private cartService: CartService) {
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
         this.currUser = this.authService.findUser();
         this.currUsername = this.authService.getUserFirstname();
+        this.loggedIn = this.authService.loggedIn;
       }
     });
   }

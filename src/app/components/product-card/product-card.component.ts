@@ -33,6 +33,7 @@ export class ProductCardComponent implements OnInit {
   currUser: User = new User(0, '', '', '', '', false);
   admin: boolean = false;
   deals: Deal[] = [];
+  loggedIn: boolean = true;
 
   @Input() productInfo!: Product;
 
@@ -44,6 +45,7 @@ export class ProductCardComponent implements OnInit {
     private cartService: CartService
   ) {
     this.currUser = this.authService.findUser();
+    this.loggedIn = this.authService.loggedIn;
     this.admin = this.currUser.ifAdmin || false;
     this.subscription = this.dealService.getDeals().subscribe(
       (data) => {
@@ -212,6 +214,10 @@ export class ProductCardComponent implements OnInit {
       }
       newPriceS = temp;
       newPriceN = +newPriceS;
+      if (newPriceN < 0.00) {
+        alert(`The price you enterted is less than $0.00. Please try again`);
+        return product;
+      }
       c = confirm(`Are you sure you want to set the price of ${product.productName} to $${newPriceN.toFixed(2)}?`);
 
     }
