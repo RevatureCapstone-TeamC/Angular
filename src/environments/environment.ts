@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   withCredentials: true,
-  baseUrl: "https://webapi-p3.azurewebsites.net",
+  baseUrl: "https://p3-windows.azurewebsites.net",
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://p3-windows.azurewebsites.net',
+    'Access-Control-Allow-Origin': 'https://ecommerce-p3.azurewebsites.net',
   },
 };
 
