@@ -257,11 +257,11 @@ export class ProductCardComponent implements OnInit {
 
   resetDeal(product: Product): Product {
     let dealFound = false;
-    console.log('Deal Array Length: ' + this.deals.length);
+    //console.log('Deal Array Length: ' + this.deals.length);
     for (let i = 0; i < this.deals.length; i++) {
       if (product.productId == this.deals[i].fk_Product_Id) {
         dealFound = true;
-        console.log('Deal Found');
+        //console.log('Deal Found');
         this.dealService.deleteDeal(this.deals[i].dealId || 0).subscribe(
           (data) => {
             console.log('Deal deleted');
