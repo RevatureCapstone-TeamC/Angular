@@ -47,12 +47,6 @@ export class LoginComponent implements OnInit {
     }
 
     if (valid) {
-      // let test = new User('FirstName', 'LastName', this.loginForm.get('email')?.value, this.loginForm.get('password')?.value);
-      // this.authService.setData(test);
-      // this.authService.loggedIn = true;
-      // this.router.navigate(['home']);
-
-      //Commented out for testing, uncomment when API is running
       let userPayload: User = new User(0, '', '', this.loginForm.get('email')?.value, this.loginForm.get('password')?.value, false);
       this.authService.login(userPayload).subscribe(
         (data) => {

@@ -80,9 +80,14 @@ export class RegisterComponent implements OnInit {
         false
       );
       this.authService.register(userPayload).subscribe(
-        () => console.log("New user registered"),
-        (err) => console.log(err),
-        () => this.router.navigate(['login'])
+        () => {
+          console.log("New user registered");
+          this.router.navigate(['login']);
+        },
+        (err) => {
+          console.log(err);
+          this.validEmail='This email is already taken.';
+        }
       );
     }
   }

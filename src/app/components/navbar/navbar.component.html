@@ -5,19 +5,24 @@
     </h4>
     <h4 style="color: #F26925;">Welcome, {{currUsername}}!</h4>
     <form class="form-inline">
-        
-        <button class="btn btn-light" [routerLink]="['/home']">
+
+        <!-- <button class="btn btn-light" [routerLink]="['/home']"> -->
+        <button class="btn btn-outline-danger my-2 my-sm-0" *ngIf="loggedIn" [routerLink]="['/home']">
             Home
         </button>
-        <button class="btn btn-light" [routerLink]="['/wishlist']">
+        <!-- <button class="btn btn-light" *ngIf="loggedIn" [routerLink]="['/wishlist']"> -->
+        <button class="btn btn-outline-danger my-2 my-sm-0" *ngIf="loggedIn" [routerLink]="['/wishlist']">
             Wishlist
             <span class="badge badge-info">{{wishlistCount}}</span>
         </button>
 
-        <button class="btn btn-light" [routerLink]="['/cart']">
+        <!-- <button class="btn btn-light" *ngIf="loggedIn" [routerLink]="['/cart']"> -->
+        <button class="btn btn-outline-danger my-2 my-sm-0" *ngIf="loggedIn" [routerLink]="['/cart']">
             Cart
             <span class="badge badge-info">{{cartCount}}</span>
         </button>
-        <button class="btn btn-outline-danger my-2 my-sm-0" (click)="logout();">Logout</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0" *ngIf="loggedIn" (click)="logout();">Logout</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0" *ngIf="!loggedIn" [routerLink]="['/login']">Login</button>
+        <button class="btn btn-outline-danger my-2 my-sm-0" *ngIf="!loggedIn" [routerLink]="['/register']">Register</button>
     </form>
 </nav>

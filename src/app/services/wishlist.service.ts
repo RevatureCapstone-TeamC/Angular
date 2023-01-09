@@ -44,7 +44,6 @@ export class WishlistService {
   }
 
   public removeItem(id: number): Observable<any> {
-    console.log("removeItem called in service");
     return this.http.delete(`${this.wishlistUrl}/${id}`, { headers: environment.headers, withCredentials: environment.withCredentials });
   }
 
