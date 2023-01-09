@@ -21,20 +21,22 @@
 
                         <div class="col-md-6">
 
-                            <div class="inputbox mt-3 mr-2"> <input type="text" name="cardNumber" class="form-control" required="required" formControlName="cardNumber"> <i class="fa fa-credit-card"></i> <span>Card Number</span>
+                            <div class="inputbox mt-3 mr-2"> <input type="tel" name="cardNumber" #ccNumber (keyup)="creditCardNumberSpacing()" onKeyPress="if(this.value.length == 19) return false;" class="form-control" required="required" formControlName="cardNumber"> <i class="fa fa-credit-card"></i> <span>Card Number</span>
                             </div>
-                            <div *ngIf="!checkoutForm.controls['cardNumber'].valid && (checkoutForm.controls['cardNumber'].dirty || checkoutForm.controls['cardNumber'].touched)" class="error-text"><span>Card number required.</span></div>
+                            <div *ngIf="!checkoutForm.controls['cardNumber'].valid && (checkoutForm.controls['cardNumber'].dirty || checkoutForm.controls['cardNumber'].touched)" class="error-text"><span>Card number required. (#### #### #### ####)</span></div>
 
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex flex-row">
                                 <div class="col">
-                                    <div class="inputbox mt-3 mr-2"> <input type="text" name="expiry" class="form-control" required="required"formControlName="expiry"> <span>Expiry</span> </div>
-                                    <div *ngIf="!checkoutForm.controls['expiry'].valid && (checkoutForm.controls['expiry'].dirty || checkoutForm.controls['expiry'].touched)" class="error-text"><span>Expiry required.</span></div>
+                                    <div class="inputbox mt-3 mr-2"> <input type="text" max=5 onKeyPress="if(this.value.length == 5)" name="expiry" class="form-control" required="required"formControlName="expiry"> <span>Expiry</span>
+                                      <p style="color: red;">{{expValid}}</p>
+                                    </div>
+                                    <div *ngIf="!checkoutForm.controls['expiry'].valid && (checkoutForm.controls['expiry'].dirty || checkoutForm.controls['expiry'].touched)" class="error-text"><span>Expiry required in the form MM/YY.</span></div>
                                 </div>
                                 <div class="col">
-                                    <div class="inputbox mt-3 mr-2"> <input type="text" name="cvv" class="form-control" required="required"formControlName="cvv"> <span>CVV</span> </div>
-                                    <div *ngIf="!checkoutForm.controls['cvv'].valid && (checkoutForm.controls['cvv'].dirty || checkoutForm.controls['cvv'].touched)" class="error-text"><span>CVV required.</span></div>
+                                    <div class="inputbox mt-3 mr-2"> <input type="tel" onKeyPress="if(this.value.length == 3) return false;" name="cvv" class="form-control" required="required" formControlName="cvv"> <span>CVV</span> </div>
+                                    <div *ngIf="!checkoutForm.controls['cvv'].valid && (checkoutForm.controls['cvv'].dirty || checkoutForm.controls['cvv'].touched)" class="error-text"><span>CVV required. (###)</span></div>
                                 </div>
                             </div>
                         </div>
@@ -71,8 +73,8 @@
                             </div>
                             <div class="col-md-6">
 
-                                <div class="inputbox mt-3 mr-2"> <input type="text" name="zipCode" class="form-control" required="required" formControlName="zipCode"> <span>Zip code</span> </div>
-                                <div *ngIf="!checkoutForm.controls['zipCode'].valid && (checkoutForm.controls['zipCode'].dirty || checkoutForm.controls['zipCode'].touched)" class="error-text"><span>Zipcode required.</span></div>
+                                <div class="inputbox mt-3 mr-2"> <input type="tel" name="zipCode" class="form-control" required="required" formControlName="zipCode"> <span>Zip code</span> </div>
+                                <div *ngIf="!checkoutForm.controls['zipCode'].valid && (checkoutForm.controls['zipCode'].dirty || checkoutForm.controls['zipCode'].touched)" class="error-text"><span>Zipcode required. (#####)</span></div>
 
                             </div>
                         </div>
