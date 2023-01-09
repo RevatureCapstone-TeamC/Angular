@@ -35,7 +35,7 @@ export class AuthService {
   }
 
   setData(user: User) {
-    console.log("Setting the data");
+    //console.log("Setting the data");
     this.currUser = user;
     this.subject.next(this.currUser);
   }

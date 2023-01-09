@@ -90,11 +90,11 @@ export class CheckoutComponent implements OnInit {
       finalProduct.productQuantity = e.quantity;
       this.finalProducts.push(finalProduct);
     });
-    console.log(this.finalProducts);
+    //console.log(this.finalProducts);
 
     this.productService.purchase(this.finalProducts).subscribe(
       res => {
-        console.log(res);
+        //console.log(res);
         this.cartProducts.forEach(e => {
           this.cartService.removeItem(e.productId).subscribe();
         });
