@@ -39,6 +39,7 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   public getProducts(): Observable<Product[]> {
+    console.log(environment.baseUrl);
     return this.http.get<Product[]>(environment.baseUrl + this.productUrl, { headers: environment.headers, withCredentials: environment.withCredentials });
   }
 
