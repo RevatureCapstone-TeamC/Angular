@@ -57,7 +57,6 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['home']); // this was past err and had the ()=>
         },
         (err) => {
-          console.log(err);
           this.validEmail = 'Your email may be incorrect';
           this.validPassword = 'Your password may be incorrect';
         }
