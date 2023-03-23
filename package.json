@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:testcafe": "testcafe chrome tests/*.js --skip-js-errors --app \"ng serve\" --app-init-delay 1 -S -s",
+    "test:app": "testcafe chrome tests/*.js --skip-js-errors --app-init-delay 1 -S -s"
   },
   "private": true,
   "dependencies": {
@@ -21,7 +23,8 @@
     "gh-action-stats": "^0.0.9",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.12.0"
+    "zone.js": "~0.12.0",
+    "testcafe": "^2.3.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.0.4",
@@ -29,6 +32,7 @@
     "@angular/compiler-cli": "^15.0.0",
     "@types/jasmine": "~4.3.0",
     "jasmine-core": "~4.5.0",
+    "testcafe": "^2.3.1",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",

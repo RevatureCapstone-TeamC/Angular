@@ -8,13 +8,13 @@ import { RegisterComponent } from './components/register/register.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
 
 const routes: Routes = [
-  { path: "", redirectTo: "/login", pathMatch: "full" },
-  { path: "login", component: LoginComponent },
-  { path: "register", component: RegisterComponent },
-  { path: "home", component: DisplayProductsComponent },
-  { path: "cart", component: CartComponent },
-  { path: "checkout", component: CheckoutComponent },
-  { path: "wishlist", component: WishlistComponent }
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', pathMatch: 'full', component: LoginComponent },
+  { path: 'register', pathMatch: 'full', component: RegisterComponent },
+  { path: 'home', pathMatch: 'full', component: DisplayProductsComponent },
+  { path: 'cart', pathMatch: 'full', component: CartComponent },
+  { path: 'checkout', pathMatch: 'full', component: CheckoutComponent },
+  { path: 'wishlist', pathMatch: 'full', component: WishlistComponent }
 ];
 
 @NgModule({

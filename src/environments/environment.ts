@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   withCredentials: true,
-  baseUrl: "https://p3-windows.azurewebsites.net",
+  baseUrl: "https://localhost:7252",
   headers: {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'https://ecommerce-p3.azurewebsites.net',
+    'Access-Control-Allow-Origin': 'https://localhost:4200',
   },
 };
 
