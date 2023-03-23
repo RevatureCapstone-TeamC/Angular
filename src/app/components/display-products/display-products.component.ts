@@ -78,14 +78,14 @@ export class DisplayProductsComponent implements OnInit {
                 for (let d = 0; d < this.deals.length; d++) {
                   for (let p = 0; p < prod.length; p++) {
                     if (this.deals[d].fk_Product_Id == prod[p].productId) {
-                      console.log(`${prod[p].productName} has a deal`);
+                      //console.log(`${prod[p].productName} has a deal`);
                       for (let w = 0; w < this.wishlistCount; w++) {
                         if (prod[p].productName == this.wishlistProducts[w].productName) {
                           //This product has a deal and is on the wishlist.
-                          console.log(`${prod[p].productName} is on your wishlist`);
+                          //console.log(`${prod[p].productName} is on your wishlist`);
                           alertStr = alertStr + `${this.wishlistProducts[w].productName} is now on sale for $${this.deals[d].salePrice?.toFixed(2)}\n`;
                         } else {
-                          console.log(`${prod[p].productName} is not on your wishlist`);
+                          //console.log(`${prod[p].productName} is not on your wishlist`);
                         }
                       }
                     }
